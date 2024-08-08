@@ -28,10 +28,10 @@ contract BetSystem is Ownable {
     
     constructor() Ownable(msg.sender) {}  
 
-    function designBet(uint256 betAmount, BetResult gameResult, uint256 endTime) public payable {
+    function designBet(uint256 betAmount, BetResult gameResult, uint256 endTime) public payable returns(bytes32 betId) {
         require(msg.value == betAmount);
 
-        bytes32 betId = keccak256(
+        betId = keccak256(
             abi.encodePacked(block.timestamp, msg.sender, endTime)
         );
 

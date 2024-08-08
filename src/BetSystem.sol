@@ -18,8 +18,6 @@ contract BetSystem is Ownable {
         Completed
     }
 
-    address public paymentCoin;
-
     mapping(bytes32 => BetStatus) public betStatus;
     mapping(bytes32 => address) public betCreatorAddress;
     mapping(bytes32 => address) public betRivalAddress;
@@ -28,9 +26,7 @@ contract BetSystem is Ownable {
     mapping(bytes32 => BetResult) public betCreatorResult;
     mapping(bytes32 => BetResult) public betRivalResult;
     
-    constructor(address paymentCoin_) Ownable(msg.sender) {
-       paymentCoin = paymentCoin_; 
-    }  
+    constructor() Ownable(msg.sender) {}  
 
     function designBet(uint256 betAmount, BetResult gameResult, uint256 endTime) public payable {
         require(msg.value == betAmount);

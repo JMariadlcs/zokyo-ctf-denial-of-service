@@ -72,7 +72,6 @@ contract BetSystem is Ownable {
             IERC20(paymentCoin).transfer(betCreatorAddress[betId], betCreatorAmount[betId]);
             IERC20(paymentCoin).transfer(betRivalAddress[betId], betRivalAmount[betId]);
         }
-
         betStatus[betId] == BetStatus.Completed;
     }
 

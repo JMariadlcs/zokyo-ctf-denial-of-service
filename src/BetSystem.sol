@@ -50,12 +50,12 @@ contract BetSystem is Ownable {
         require(gameResult != betCreatorResult[betId], "You can not bet the same result");
 
         uint256 rivalAmount = betCreatorAmount[betId];
-        require(msg.value == rivalAmount);
+        require(msg.value == rivalAmount, "Not enough paid");
 
         betRivalAddress[betId] = msg.sender;
         betRivalAmount[betId] = rivalAmount;
         betRivalResult[betId] = gameResult;
-        betStatus[betId] == BetStatus.Accepted;
+        betStatus[betId] = BetStatus.Accepted;
     }
 
     function resolvedBet(bytes32 betId, BetResult finalGameResult) public onlyOwner() {
@@ -75,7 +75,7 @@ contract BetSystem is Ownable {
             (bool success2, ) = betRivalAddress[betId].call{value: betRivalAmount[betId]}("");
             require(success2, "Transfer failed");
         }
-        betStatus[betId] == BetStatus.Completed;
+        betStatus[betId] = BetStatus.Completed;
     }
 
     function cancelBet(bytes32 betId) public {
@@ -85,6 +85,6 @@ contract BetSystem is Ownable {
         (bool success, ) = betCreatorAddress[betId].call{value:  betCreatorAmount[betId]}("");
         require(success, "Transfer failed");
         
-        betStatus[betId] == BetStatus.Cancelled;
+        betStatus[betId] = BetStatus.Cancelled;
     }
 }

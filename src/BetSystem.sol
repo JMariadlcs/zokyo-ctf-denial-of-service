@@ -25,20 +25,22 @@ contract BetSystem is Ownable {
     mapping(bytes32 => uint256) public betRivalAmount;
     mapping(bytes32 => BetResult) public betCreatorResult;
     mapping(bytes32 => BetResult) public betRivalResult;
+    mapping(bytes32 => uint256) public betEndTime;
     
     constructor() Ownable(msg.sender) {}  
 
-    function designBet(uint256 betAmount, BetResult gameResult, uint256 endTime) public payable returns(bytes32 betId) {
+    function designBet(uint256 betAmount, uint256 allowedGameNumber, BetResult gameResult, uint256 endTime) public payable returns(bytes32 betId) {
         require(msg.value == betAmount);
 
         betId = keccak256(
-            abi.encodePacked(block.timestamp, msg.sender, endTime)
+            abi.encodePacked(block.timestamp, msg.sender, allowedGameNumber, endTime)
         );
 
         betCreatorAddress[betId] = msg.sender;
         betStatus[betId] = BetStatus.Created;
         betCreatorAmount[betId] += betAmount;
         betCreatorResult[betId] = gameResult;
+        betEndTime[betId] = endTime;
     }
 
     function betAgaisnt(bytes32 betId, BetResult gameResult) public payable {
@@ -57,6 +59,8 @@ contract BetSystem is Ownable {
     }
 
     function resolvedBet(bytes32 betId, BetResult finalGameResult) public onlyOwner() {
+        require(block.timestamp >= betEndTime[betId], "Game not finished yet");
+
         uint256 totalBetAmount = betCreatorAmount[betId] + betRivalAmount[betId];
 
         if (betCreatorResult[betId] == finalGameResult) {

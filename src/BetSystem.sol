@@ -25,6 +25,7 @@ contract BetSystem is Ownable {
     mapping(bytes32 => uint256) public betRivalAmount;
     mapping(bytes32 => BetResult) public betCreatorResult;
     mapping(bytes32 => BetResult) public betRivalResult;
+    mapping(bytes32 => uint256) public betStartTime;
     mapping(bytes32 => uint256) public betEndTime;
     
     constructor() Ownable(msg.sender) {}  
@@ -40,6 +41,7 @@ contract BetSystem is Ownable {
         betStatus[betId] = BetStatus.Created;
         betCreatorAmount[betId] += betAmount;
         betCreatorResult[betId] = gameResult;
+        betStartTime[betId] = block.timestamp;
         betEndTime[betId] = endTime;
     }
 
@@ -48,6 +50,7 @@ contract BetSystem is Ownable {
         require(betRivalAddress[betId] == address(0), "Bet is in progress");
         require(betCreatorAddress[betId] != msg.sender, "Incorrect better");
         require(gameResult != betCreatorResult[betId], "You can not bet the same result");
+        require(block.timestamp >= betStartTime[betId] + 10 minutes, "Wait 10 min");
 
         uint256 rivalAmount = betCreatorAmount[betId];
         require(msg.value == rivalAmount, "Not enough paid");

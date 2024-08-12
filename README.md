@@ -6,7 +6,7 @@ Welcome to this internal Zokyo CTF. When talking about CTFs, most of them are de
 
 ## Inspiration
 
-This CTF was inspired by one of our previous audits, where the exploit scenario was not initially identified in the audit itself. However, it led me to consider an edge case that could have resulted in a critical scenario, which may also arise in future audits the team will conduct. I am confident that, after completing this workshop, we will all be better equipped to detect such vulnerabilities.
+This CTF was inspired by one of our previous audits, where the exploit scenario was not initially present in the audit itself. However, it led me to consider an edge case that could have resulted in a critical scenario, which may also arise in future audits the team will conduct. I am confident that, after completing this workshop, we will all be better equipped to detect such vulnerabilities.
 
 ## CTF description
 

@@ -51,6 +51,7 @@ contract BetSystem is Ownable {
         require(betCreatorAddress[betId] != msg.sender, "Incorrect better");
         require(gameResult != betCreatorResult[betId], "You can not bet the same result");
         require(block.timestamp >= betStartTime[betId] + 10 minutes, "Wait 10 min");
+        require(betCreatorAmount[betId] != 0, "No better yet");
 
         uint256 rivalAmount = betCreatorAmount[betId];
         require(msg.value == rivalAmount, "Not enough paid");
